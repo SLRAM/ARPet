@@ -21,7 +21,7 @@ class ViewController: UIViewController {
 		//for auto placement
 		self.placeCube()
 //		self.arView.enableObjectRemoval()
-		self.arView.enableObjectInteration()
+//		self.arView.enableObjectInteration()
 	}
 
 	@objc func handleTap(recognizer: UITapGestureRecognizer) {
@@ -62,6 +62,8 @@ class ViewController: UIViewController {
 	func placeCube() {
 		let cube = self.createCube()
 		self.placeObjectOnPlane(object: cube)
+		self.generateCollisionShapes(modelEntity: cube)
+		self.arView.enableObjectInteration()
 	}
 
 	func placeObjectInWorld(object: ModelEntity, at location: SIMD3<Float>) {
@@ -99,10 +101,13 @@ extension ARView {
 
 	@objc func handleLongPress(recognizer: UILongPressGestureRecognizer) {
 		let location = recognizer.location(in: self)
-		if let entity = self.entity(at: location), let anchorEntity = entity.anchor, anchorEntity.name == "CubeAnchor" {
+		if let entity = self.entity(at: location) {
+		   if let anchorEntity = entity.anchor, anchorEntity.name == "CubeAnchor" {
 			anchorEntity.removeFromParent()
 			print("Removed anchor with name: \(anchorEntity.name)")
 		}
+		}
+		print("steph")
 	}
 
 	func enableObjectInteration() {
